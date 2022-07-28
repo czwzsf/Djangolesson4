@@ -26,6 +26,8 @@ class SightListView(ListView):
         queryset = Sight.objects.filter(query)
         return queryset
 
+    # 为了能够将ListView生产的模版方法变成接口能够调用的数据，需要重写方法
+    # TODO 重点学习
     def render_to_response(self, context, **response_kwargs):
         page_obj = context['page_obj']
         data = {
