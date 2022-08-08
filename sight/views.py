@@ -42,10 +42,11 @@ class SightListView(ListView):
             data['objects'].append({
                 'id': item.id,
                 'name': item.name,
-                'main_img': item.main_img.url,
+                'img_url': item.main_img.url,
                 'score': item.score,
                 'province': item.province,
                 'city': item.city,
+                'min_price': item.min_price,
                 # TODO 评论数量暂时无法获取
                 'comment_count': 0
             })
