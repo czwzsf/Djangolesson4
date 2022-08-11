@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.contenttypes.fields import GenericRelation
 
 class Sight(models.Model):
     """ 景点基础信息 """
@@ -26,3 +26,5 @@ class Sight(models.Model):
     class Meta:
         db_table = 'sight'
         ordering = ['-updated_at']
+
+
