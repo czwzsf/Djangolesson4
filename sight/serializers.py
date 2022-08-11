@@ -66,3 +66,30 @@ class CommentListSerializer(BaseListPageSerializer):
             'images': images,
             'created_at': obj.created_at.strftime('%Y-%m-%d')
         }
+
+
+class TicketListSerializer(BaseListPageSerializer):
+    # 返回的值是一个列表
+    def get_object(self, obj):
+        return {
+            'pk': obj.pk,
+            'name': obj.name,
+            'desc': obj.desc,
+            'types': obj.types,
+            'price': obj.price,
+            'discount': obj.discount,
+            'total_stock': obj.total_stock,
+            'remain_stock': obj.remain_stock
+        }
+
+
+class SightInfoSerializer(BaseSerializer):
+    def to_dict(self):
+        obj = self.obj
+        return {
+            'pk': obj.sight.pk,  # 景点ID
+            'entry_explain': obj.entry_explain,
+            'play_way': obj.play_way,
+            'tips': obj.tips,
+            'traffic': obj.traffic,
+        }

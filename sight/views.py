@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
-from sight.models import Sight, Comment
+from sight.models import Sight, Comment, Ticket, Info
 
 from sight import serializers
 from utils.response import NotFoundJsonResponse
@@ -93,5 +93,42 @@ class SightCommentListView(ListView):
         page_obj = context['page_obj']
         if page_obj is not None:
             data = serializers.CommentListSerializer(page_obj).to_dict()
+            return http.JsonResponse(data)
+        return NotFoundJsonResponse()
+
+
+class SightTicketListView(ListView):
+    """
+    门票列表
+    """
+    paginate_by = 10
+
+    def get_queryset(self):
+        # 根据景点ID查询景点
+        # 获取网址上的id
+        sight_id = self.kwargs.get('pk', None)
+        return Ticket.objects.filter(is_valid=True, sight__id=sight_id)
+
+    def render_to_response(self, context, **response_kwargs):
+        """ 重写响应的返回 """
+        page_obj = context['page_obj']
+        if page_obj is not None:
+            data = serializers.TicketListSerializer(page_obj).to_dict()
+            return http.JsonResponse(data)
+        return NotFoundJsonResponse()
+
+
+class SightInfoDetailView(DetailView):
+    # 如果不使用slug_field将浏览器里面的pk指定为sight的主键，就会导致查询不出来我们所想要的景点信息，要与sight下的主键对应起来
+    # TODO 结束后进行学习
+    slug_field = 'sight__pk'
+
+    def get_queryset(self):
+        return Info.objects.all()
+
+    def render_to_response(self, context, **response_kwargs):
+        page_obj = context['object']
+        if page_obj is not None:
+            data = serializers.SightInfoSerializer(page_obj).to_dict()
             return http.JsonResponse(data)
         return NotFoundJsonResponse()
