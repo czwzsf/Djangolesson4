@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
-from sight.models import Sight
+from sight.models import Sight, Comment
 
 from sight import serializers
 from utils.response import NotFoundJsonResponse
@@ -70,3 +70,28 @@ class SightDetailView(DetailView):
         if page_obj is not None:
             data = serializers.SightDetailSerializer(page_obj).to_dict()
             return http.JsonResponse(data)
+
+
+class SightCommentListView(ListView):
+    """
+    景点评论列表的接口
+    """
+    paginate_by = 10
+
+    def get_queryset(self):
+        # 根据景点ID查询景点
+        # 获取网址上的id
+        sight_id = self.kwargs.get('pk', None)
+        sight = Sight.objects.filter(pk=sight_id, is_valid=True).first()
+        if sight:
+            # return Comment.objects.filter(is_valid=True, sight=sight)
+            return sight.comments.filter(is_valid=True)
+        return Comment.objects.none()
+
+    def render_to_response(self, context, **response_kwargs):
+        """ 重写响应的返回 """
+        page_obj = context['page_obj']
+        if page_obj is not None:
+            data = serializers.CommentListSerializer(page_obj).to_dict()
+            return http.JsonResponse(data)
+        return NotFoundJsonResponse()

@@ -1,6 +1,7 @@
 """
 重构化使用
 """
+from system.serializers import BaseImageSerializer
 from utils.serializers import BaseListPageSerializer, BaseSerializer
 
 
@@ -40,4 +41,28 @@ class SightDetailSerializer(BaseSerializer):
             'town': obj.town,
             # TODO 评论数量暂时无法获取
             'comment_count': 0
+        }
+
+
+class CommentListSerializer(BaseListPageSerializer):
+    """ 评论列表 """
+
+    def get_object(self, obj):
+        user = obj.user
+        images = []
+        for image in obj.images.filter(is_valid=True):
+            images.append(BaseImageSerializer(image).to_dict())
+        return {
+            'user': {
+                'pk': user.pk,
+                'nickname': user.nickname
+            },
+            'pk': obj.pk,
+            'content': obj.content,
+            'is_top': obj.is_top,
+            'love_count': obj.love_count,
+            'score': obj.score,
+            'is_public': obj.is_public,
+            'images': images,
+            'created_at': obj.created_at.strftime('%Y-%m-%d')
         }
