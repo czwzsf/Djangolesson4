@@ -1,15 +1,16 @@
 from django import http
 from django.db.models import Q
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from sight.models import Sight
 
-import serializers
+from sight import serializers
+from utils.response import NotFoundJsonResponse
 
 
 class SightListView(ListView):
-    """ 景点列表 """
+    """ 景点列表接口 """
     # 每页放5条数据
     paginate_by = 5
 
@@ -24,7 +25,6 @@ class SightListView(ListView):
         is_top = self.request.GET.get('is_top', None)
         if is_top:
             query = query & Q(is_top=True)
-        # TODO 3. 景点名称搜索
         queryset = Sight.objects.filter(query)
         return queryset
 
@@ -35,6 +35,8 @@ class SightListView(ListView):
         if page_obj is not None:
             data = serializers.SightListSerializer(page_obj).to_dict()
             return http.JsonResponse(data)
+        else:
+            return NotFoundJsonResponse()
         # data = {
         #     'meta': {
         #         'total_count': page_obj.paginator.count,
@@ -52,7 +54,12 @@ class SightListView(ListView):
         #         'province': item.province,
         #         'city': item.city,
         #         'min_price': item.min_price,
-        #         # TODO 评论数量暂时无法获取
+        #
         #         'comment_count': 0
         #     })
         # return http.JsonResponse(data)
+
+
+class SightDetailView(DetailView):
+    # TODO 面向对象的接口调用
+    pass

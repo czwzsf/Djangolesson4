@@ -47,7 +47,7 @@ class BaseListPageSerializer(object):
         self.object_list = object_list if object_list else page_obj.object_list
 
     def get_object(self, obj):
-        """ 对象的内容，子类重写 """
+        """ 对象的内容，子类重写为json对象 """
         return {}
 
     def to_dict(self):

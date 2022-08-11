@@ -11,7 +11,7 @@ class SightListSerializer(BaseListPageSerializer):
         return {
             'id': obj.id,
             'name': obj.name,
-            'main_img': obj.main_img.url,
+            'img_url': obj.main_img.url,
             'score': obj.score,
             'province': obj.province,
             'min_price': obj.min_price,
