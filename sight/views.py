@@ -5,6 +5,8 @@ from django.views.generic import ListView
 
 from sight.models import Sight
 
+import serializers
+
 
 class SightListView(ListView):
     """ 景点列表 """
@@ -30,24 +32,27 @@ class SightListView(ListView):
     # 重点学习
     def render_to_response(self, context, **response_kwargs):
         page_obj = context['page_obj']
-        data = {
-            'meta': {
-                'total_count': page_obj.paginator.count,
-                'page_count': page_obj.paginator.num_pages,
-                'current_page': page_obj.number,
-            },
-            'objects': []
-        }
-        for item in page_obj.object_list:
-            data['objects'].append({
-                'id': item.id,
-                'name': item.name,
-                'img_url': item.main_img.url,
-                'score': item.score,
-                'province': item.province,
-                'city': item.city,
-                'min_price': item.min_price,
-                # TODO 评论数量暂时无法获取
-                'comment_count': 0
-            })
-        return http.JsonResponse(data)
+        if page_obj is not None:
+            data = serializers.SightListSerializer(page_obj).to_dict()
+            return http.JsonResponse(data)
+        # data = {
+        #     'meta': {
+        #         'total_count': page_obj.paginator.count,
+        #         'page_count': page_obj.paginator.num_pages,
+        #         'current_page': page_obj.number,
+        #     },
+        #     'objects': []
+        # }
+        # for item in page_obj.object_list:
+        #     data['objects'].append({
+        #         'id': item.id,
+        #         'name': item.name,
+        #         'img_url': item.main_img.url,
+        #         'score': item.score,
+        #         'province': item.province,
+        #         'city': item.city,
+        #         'min_price': item.min_price,
+        #         # TODO 评论数量暂时无法获取
+        #         'comment_count': 0
+        #     })
+        # return http.JsonResponse(data)
