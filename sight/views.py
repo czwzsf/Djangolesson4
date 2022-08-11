@@ -62,4 +62,11 @@ class SightListView(ListView):
 
 class SightDetailView(DetailView):
     # TODO 面向对象的接口调用
-    pass
+    def get_queryset(self):
+        return Sight.objects.filter(is_valid=True)
+
+    def render_to_response(self, context, **response_kwargs):
+        page_obj = context['object']
+        if page_obj is not None:
+            data = serializers.SightDetailSerializer(page_obj).to_dict()
+            return http.JsonResponse(data)
