@@ -23,6 +23,12 @@ class SightListView(ListView):
         is_top = self.request.GET.get('is_top', None)
         if is_top:
             query = query & Q(is_top=True)
+        # TODO 景点列表搜索
+        # 从前端将name传递进入后端
+        name = self.request.GET.get('name', None)
+        if name:
+            # 使用Q方法来进行查询
+            query = query & Q(name__icontains=name)
         queryset = Sight.objects.filter(query)
         return queryset
 
