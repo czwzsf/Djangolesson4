@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 
 # Create your views here.
 from system.models import Slider

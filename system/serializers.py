@@ -10,3 +10,14 @@ class BaseImageSerializer(BaseSerializer):
             'img': image.img.url,
             'summary': image.summary
         }
+
+
+class SliderListSerializer(BaseSerializer):
+    def to_dict(self):
+        item = self.obj
+        return {
+            'id': item.id,
+            'img_url': item.img.url,
+            'target_url': item.target_url,
+            'name': item.name
+        }

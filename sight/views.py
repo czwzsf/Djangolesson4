@@ -1,11 +1,9 @@
 from django import http
 from django.db.models import Q
-from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
-from sight.models import Sight, Comment, Ticket, Info
-
 from sight import serializers
+from sight.models import Sight, Comment, Ticket, Info
 from utils.response import NotFoundJsonResponse
 
 
