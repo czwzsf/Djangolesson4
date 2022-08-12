@@ -63,6 +63,10 @@ class SightListView(ListView):
         #     })
         # return http.JsonResponse(data)
 
+    def get_paginate_by(self, queryset):
+        page_size = self.request.GET.get('limit', None)
+        return page_size or self.paginate_by
+
 
 class SightDetailView(DetailView):
     # TODO 面向对象的接口调用
