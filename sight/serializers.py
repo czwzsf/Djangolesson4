@@ -40,7 +40,8 @@ class SightDetailSerializer(BaseSerializer):
             'area': obj.area,
             'town': obj.town,
             # TODO 评论数量暂时无法获取
-            'comment_count': 0
+            'comment_count': 0,
+            'image_count': 10,
         }
 
 
