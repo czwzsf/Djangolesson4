@@ -18,7 +18,7 @@ class SightListSerializer(BaseListPageSerializer):
             'min_price': obj.min_price,
             'city': obj.city,
             # TODO 评论数量暂时无法获取
-            'comment_count': 0
+            'comment_count': obj.comment_count
         }
 
 
@@ -40,8 +40,8 @@ class SightDetailSerializer(BaseSerializer):
             'area': obj.area,
             'town': obj.town,
             # TODO 评论数量暂时无法获取
-            'comment_count': 0,
-            'image_count': 10,
+            'comment_count': obj.comment_count,
+            'image_count': obj.image_count,
         }
 
 

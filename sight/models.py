@@ -33,12 +33,22 @@ class Sight(CommonModel):
         db_table = 'sight'
         ordering = ['-updated_at']
 
+    @property
+    def comment_count(self):
+        """评论总数"""
+        return self.comments.filter(is_valid=True).count()
+
+    @property
+    def image_count(self):
+        """景点图片的数量"""
+        return self.images.filter(is_valid=True).count()
+
 
 class Info(models.Model):
     """ 景点详情 """
     sight = models.OneToOneField(Sight, on_delete=models.CASCADE)
     entry_explain = models.CharField('入园参考', max_length=1024, null=True, blank=True)
-    play_way = models.TextField('特色玩法',null=True, blank=True)
+    play_way = models.TextField('特色玩法', null=True, blank=True)
     tips = models.TextField('温馨提示', null=True, blank=True)
     traffic = models.TextField('交通到达', null=True, blank=True)
 
@@ -66,7 +76,7 @@ class Ticket(CommonModel):
     entry_way = models.SmallIntegerField('入园方式',
                                          choices=EntryWay.choices,
                                          default=EntryWay.BY_TICKET)
-    tips = models.TextField('预定须知',null=True, blank=True)
+    tips = models.TextField('预定须知', null=True, blank=True)
     remark = models.TextField('其他说明', null=True, blank=True)
     status = models.SmallIntegerField('状态',
                                       choices=TicketStatus.choices,
@@ -74,6 +84,14 @@ class Ticket(CommonModel):
 
     class Meta:
         db_table = 'sight_ticket'
+
+    @property
+    def sell_price(self):
+        """
+        :return: 销售价格
+        :rtype: float
+        """
+        return self.price * self.discount / 10
 
 
 class Comment(CommonModel):
