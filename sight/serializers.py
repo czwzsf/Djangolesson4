@@ -79,6 +79,7 @@ class TicketListSerializer(BaseListPageSerializer):
             'types': obj.types,
             'price': obj.price,
             'discount': obj.discount,
+            'sell_price': obj.sell_price,
             'total_stock': obj.total_stock,
             'remain_stock': obj.remain_stock
         }
