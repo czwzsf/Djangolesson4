@@ -1,4 +1,5 @@
-from django.http import JsonResponse
+from django.core.cache import cache
+from django.http import JsonResponse, HttpResponse
 
 # Create your views here.
 from system.models import Slider
@@ -29,3 +30,16 @@ def slider_list(request):
             'name': item.name
         })
     return JsonResponse(data)
+
+
+def cache_set(request):
+    """写缓存"""
+    # cache.set('username', 'lisi')
+    cache.set('password', 'password', timeout=20)
+    return HttpResponse("ok")
+
+
+def cache_get(request):
+    """读缓存"""
+    value = cache.get('password')
+    return HttpResponse(value)
